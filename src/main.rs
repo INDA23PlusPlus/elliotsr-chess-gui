@@ -22,9 +22,9 @@ fn main() -> GameResult {
 const BACKGROUND_COLOR: Color = Color::new(0.1, 0.1, 0.1, 1.0);
 const TILE_LIGHT_COLOR: Color = Color::new(1.0, 0.95, 0.9, 1.0);
 const TILE_DARK_COLOR: Color = Color::new(0.2, 0.2, 0.4, 1.0);
-const TILE_HOVER_COLOR: Color = Color::new(1.0, 0.95, 0.8, 0.8);
+const TILE_HOVER_COLOR: Color = Color::new(1.0, 1.0, 0.6, 0.8);
 const TILE_SELECT_COLOR: Color = Color::new(1.0, 0.9, 0.6, 1.0);
-const MOVE_PREVIEW_COLOR: Color = Color::new(0.6, 0.9, 1.0, 0.6);
+const MOVE_PREVIEW_COLOR: Color = Color::new(0.3, 1.0, 0.3, 0.8);
 const PLAYER_TURN_HINT_COLOR: Color = Color::new(0.3, 1.0, 0.3, 1.0);
 
 const TURN_HINT_RADIUS: f32 = 8.0;
