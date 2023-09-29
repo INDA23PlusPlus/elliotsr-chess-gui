@@ -2,7 +2,7 @@ use chess::Tile;
 use ggez::conf::{WindowSetup, WindowMode};
 use ggez::glam::{vec2, Vec2};
 use ggez::{Context, ContextBuilder, GameResult};
-use ggez::graphics::{self, Color, Image, Mesh, FillOptions, Rect, DrawParam};
+use ggez::graphics::{self, Color, Image, Mesh, FillOptions, Rect, DrawParam, Text};
 use ggez::event::{self, EventHandler};
 
 use api as chess;
@@ -25,6 +25,9 @@ const TILE_DARK_COLOR: Color = Color::new(0.2, 0.2, 0.4, 1.0);
 const TILE_HOVER_COLOR: Color = Color::new(1.0, 0.95, 0.8, 0.8);
 const TILE_SELECT_COLOR: Color = Color::new(1.0, 0.9, 0.6, 1.0);
 const MOVE_PREVIEW_COLOR: Color = Color::new(0.6, 0.9, 1.0, 0.6);
+const PLAYER_TURN_HINT_COLOR: Color = Color::new(0.3, 1.0, 0.3, 1.0);
+
+const TURN_HINT_RADIUS: f32 = 8.0;
 
 const TILE_SIZE_PX: f32 = 64.0;
 const BOARD_SIZE_PX: f32 = 8.0 * TILE_SIZE_PX;
@@ -75,7 +78,7 @@ fn get_piece_uv(tile: &chess::Tile) -> Rect {
         Tile::Queen(chess::Color::Black) => BLACK_QUEEN_UV,
         Tile::King(chess::Color::Black) => BLACK_KING_UV,
 
-        _ => panic!(),
+        _ => panic!("Unexpected piece"),
     }
 }
 
@@ -83,6 +86,7 @@ struct Game {
     chess: chess::Game,
     piece_sheet: Image,
     quad_mesh: Mesh,
+    circle_mesh: Mesh,
     selected: Option<(usize, usize)>,
     moves: Vec<chess::Ply>
 }
@@ -94,7 +98,9 @@ impl Game {
             selected: None,
             moves: Vec::new(),
             piece_sheet: Image::from_path(ctx, "/pieces.png")?,
-            quad_mesh: Mesh::new_rectangle(ctx, graphics::DrawMode::Fill(FillOptions::DEFAULT), Rect::one(), Color::WHITE)?
+            quad_mesh: Mesh::new_rectangle(ctx, graphics::DrawMode::Fill(FillOptions::DEFAULT), Rect::one(), Color::WHITE)?,
+            circle_mesh: Mesh::new_circle(ctx, graphics::DrawMode::Fill(FillOptions::DEFAULT), vec2(0.0, 0.0), 1.0, 0.01, Color::WHITE
+            )?
         })
     }
 }
@@ -176,6 +182,13 @@ impl EventHandler for Game {
                 canvas.draw(&self.quad_mesh, DrawParam::new().dest_rect(dest).color(MOVE_PREVIEW_COLOR).z(1));
             }
         }
+
+        let (hx, hy) = match self.chess.get_player() {
+            chess::Color::White => (2.0 * TURN_HINT_RADIUS, BOARD_SIZE_PX - 2.0 * TURN_HINT_RADIUS),
+            chess::Color::Black => (2.0 * TURN_HINT_RADIUS, 2.0 * TURN_HINT_RADIUS),
+        };
+
+        canvas.draw(&self.circle_mesh, DrawParam::new().scale(vec2(TURN_HINT_RADIUS, TURN_HINT_RADIUS)).dest(vec2(hx, hy)).color(PLAYER_TURN_HINT_COLOR).z(4));
 
         canvas.finish(ctx)?;
         
