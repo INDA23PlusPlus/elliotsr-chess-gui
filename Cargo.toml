@@ -7,4 +7,7 @@ edition = "2021"
 
 [dependencies]
 ggez = "0.9.3"
+serde = "1.0.1"
+serde_json = "1.0.1"
 api = { git = "https://github.com/INDA23PlusPlus/simonju-chess" }
+chess-network-protocol = { git = "https://github.com/INDA23PlusPlus/chess-network-protocol" }

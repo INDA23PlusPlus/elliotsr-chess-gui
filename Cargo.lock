@@ -390,6 +390,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
 
 [[package]]
+name = "chess-network-protocol"
+version = "0.1.0"
+source = "git+https://github.com/INDA23PlusPlus/chess-network-protocol#9c862a35f072ef86453af8ff79ff5cf26ca02308"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "clang-sys"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -673,7 +682,10 @@ name = "elliotsr-chess-gui"
 version = "0.1.0"
 dependencies = [
  "api",
+ "chess-network-protocol",
  "ggez",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
